@@ -76,3 +76,77 @@ Practice exercise: Modify yesterday's class to include a constructor that initia
 Try at Code: [UserConstructDestruct.php](UserConstructDestruct.php)
 
 
+## Day 3: Visibility Modifiers & Encapsulation
+
+Encapsulation is a fundamental OOP principle that restricts direct access to an object's properties and methods. PHP offers three visibility modifiers:
+
+```php
+<?php
+class BankAccount {
+    // Private: accessible only within this class
+    private $balance;
+    
+    // Protected: accessible within this class and child classes
+    protected $accountNumber;
+    
+    // Public: accessible from anywhere
+    public $accountHolder;
+    
+    public function __construct($holder, $accountNumber, $initialBalance) {
+        $this->accountHolder = $holder;
+        $this->accountNumber = $accountNumber;
+        $this->balance = $initialBalance;
+    }
+    
+    // Getter method - provides controlled access to private property
+    public function getBalance() {
+        return $this->balance;
+    }
+    
+    // Setter method - provides controlled way to modify private property
+    public function deposit($amount) {
+        if ($amount > 0) {
+            $this->balance += $amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public function withdraw($amount) {
+        if ($amount > 0 && $this->balance >= $amount) {
+            $this->balance -= $amount;
+            return true;
+        }
+        return false;
+    }
+}
+
+$account = new BankAccount("John Doe", "123456789", 1000);
+
+// This works - public property
+echo $account->accountHolder; // John Doe
+
+// This would cause an error - private property
+// echo $account->balance;
+
+// This would cause an error - protected property
+// echo $account->accountNumber;
+
+// Use public methods to interact with private properties
+echo $account->getBalance(); // 1000
+$account->deposit(500);
+echo $account->getBalance(); // 1500
+?>
+```
+
+Benefits of encapsulation:
+1. **Data protection** - prevents accidental modification
+2. **Validation** - ensures data integrity (e.g., can't deposit negative amounts)
+3. **Flexibility** - implementation details can change without affecting external code
+4. **Maintenance** - easier to debug and modify
+
+Practice exercise: Modify your class from the previous days to use private properties with getters and setters.
+
+
+Try at Code: [BankAccount.php](BankAccount.php)
+
